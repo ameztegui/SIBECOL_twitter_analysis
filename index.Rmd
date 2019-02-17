@@ -20,36 +20,31 @@ library(lubridate)
 library(RColorBrewer)
 
 tweets <- readRDS("./data/retweets.rds")
-tweets$created <- as_datetime(tweets$created)
+tweets$created <- as_datetime(tweets$created_at)
 
 ```
 
+La semana pasada, del 4 al 7 de febrero, se celebró en Barcelona la primera edición del [congreso del SIBECOL], la Sociedad Ibérica de Ecología, que aúna varias sociedades ecológicas ibéricas, tanto españolas como portuguesas. Como decía, era la primera edición, ya que la sociedad en sí se constituyó hace apenas unos meses, y funcionó también como el congreso bianual de la [AEET.]
+
+Siendo en Barcelona, hubiera sido un pecado perdérselo, y además el primer día organizaba un workshop junto a [Víctor Granda] y el jueves participaba cómo autor en dos presentaciones. Entre eso, el interés de las charlas, y los amigos que sabía que asistirían, al final acabe yendo cada uno de los cuatro días. La actividad fue frenética, con hasta 10 sesiones paralelas, y la actividad en redes sociales no lo fue menos. Así que por no perder las tradiciones, asquí os traigo el análisis de lo que dio de si el congreso en Twitter, donde se podía seguir con la etiqueta [#SIBECOL2019].
+
+Tengo que reconocer que estuve a punto de no hacer esta entrada, ya que [Francisco Rodriguez] montó esta gran app donde se recogían las principales estadísticas en tiempo real, pero por petición popular - al menos de unos cuantos, que querían ver el análisis de redes que he hechi en otros congresos anteriores ([ICOPFIRES]; [MEDECOS]; [7CFE]) - al final me he animado. ¡Espero que os guste!
+
+Como hago siempre, al César lo que es del César. El código que uso para generar estos análisis lo he adaptado de diversas fuentes, en concreto [esta](https://github.com/fmichonneau/evol2015-tweets),  [esta](http://rollinsonecology.com) y [esta](https://github.com/khturner/HashtagISME16). Y agradecimiento especial a Francisco Rodriguez por la app y por pasarme los tweets con el hashtag [#SIBECOL2019]. Finalmente, el código RMarkdown usado para generar esta entrada están disponibles [aquí](https://github.com/ameztegui/Hashtag_Analysis). Dicho esto, al lío.
+
+El número total de tweets generados, tweets originales y usuarios que han tuiteado fue sensiblemente mayor que en el último congreso de la [AEET-MEDECOS], y similar al que obtuvimos, por ejemplo, en el pasado [Congreso Forestal Español].
 
 
-La semana pasada se celebraron a la vez dos congresos a los que no me hubiera importado para nada asistir. Por un lado, se celebr? en Sevilla, del 31 de enero al 4 de febrero, el [Congreso de la Asociaci?n Espa?ola de Ecolog?a Terrestre (AEET)](http://www.medecos-aeet-meeting2017.es/), que este a?o iba en conjunto con MEDECOS, el congreso que organiza la International Society of Mediterranean Ecology. Por otro lado, la Fundaci?n Pau Costa organizaba en Barcelona ICOPFIRES, el [Congreso Internacional sobre Quemas Prescritas](http://www.paucostafoundation.org/ICoPFires/), que este a?o se hizo coincidir adem?s con la [Wildland Fire Safety Summit](http://www.paucostafoundation.org/ICoPFires/wildland-fire-safety-summit/).
 
-Como os dec?a, hubiera encontrado cualquiera de los dos muy interesante, porque adem?s en cualquiera de ellos ten?a numerosos colegas - aunque m?s en Sevilla, donde adem?s el lab estuvo representado por [este p?ster](https://twitter.com/ctforestal/status/826833160134606850). Por suerte, los que nos tuvimos que quedar en casa contamos hoy en d?a con herramientas para ir siguiendo los momentos m?s interesantes de los congresos, y una de las m?s ?giles en este sentido es sin duda twitter. Los dos congresos tuvieron la buena iniciativa de definir con antelaci?n un hashtag claro, [#AEETMED](https://twitter.com/search?q=%23AEETMED&src=tyah) para el de Sevilla, [#iCOPFires](https://twitter.com/search?q=%23icopfires&src=typd) para el de Barcelona, y as? muchos pudimos seguir desde nuestro ordenador o m?vil los momentos m?s destacados.
-
-Pero ?cu?l fue la repercusi?n de estos eventos en twitter? ?Cu?ndo y qui?n tuite? desde los congresos? ?Qui?nes fueron los tuiteros m?s activos? Es lo que me pretendo analizar hoy, aprovechando que se puede extraer f?cilmente la informaci?n a partir de la API de Twitter. Antes de meternos en harina, quiero dejar claro que el c?digo que he utilizado para descargar los tuits y analizar las tendencias no es originalmente m?o, sino una adaptaci?n de diversas fuentes, en concreto [?sta](https://github.com/fmichonneau/evol2015-tweets), [?sta](https://github.com/jlehtoma/iccb2015-tweets/blob/gh-pages/index.Rmd), [?sta](http://rollinsonecology.com) y [?sta](https://github.com/khturner/HashtagISME16) Los tweets que incluian el hashtag #AEETMED o #ICOPFires se recopilaron de la API de RTwitter mediante el paquete [twitteR](https://cran.r-project.org/web/packages/twitteR/index.html) y la entrada la he escrito utilizando RMarkdown, y el codigo fuente y los datos 
-est?n [disponibles en mi GitHub](https://github.com/ameztegui/Hashtag_Analysis). Dicho esto, al l?o.
-
-Seg?n los organizadores, el iCOPFires acogi? en total a unos 500 asistentes, mientras que AEETMED reuni? a unos 600.  En cuanto a n?mero de tuits generados la cosa anduvo bastante pareja, como se ve en esta tabla.
-
-
-
-|Descripcion | AEETMED | iCOPFires
+|Descripcion | N
 |------------|---|---|
 |Numero total de tweets generados | `r nrow(tweets)`|
 |Numero total de tweets originales (sin contar retweets): | `r sum(!tweets$is_retweet)`|
 |Numeros de usuarios que han tuiteado: | `r length(unique(tweets$screen_name))`|
 
 
-A partir de aqu?, como no quiero que esto se convierta en una competicion entre ambos congresos, los analizar? por separado, en dos entradas distintas. Hoy nos centraremos en el congreso de la AEET, y ma?ana o pasado publicar? el an?lisis de ICOPFires.
-
-
 #### Actividad durante la semana
 
-Como la API permite importar la fecha y hora del tuit, podemos ver en qu? momentos se produjo m?s actividad.
 
 ```{r echo =FALSE, dpi = 250}
 
@@ -68,8 +63,8 @@ tweets %>%
                       labels=c("Original", "Retweet")) 
 ```
 
-Vemos que en el grueso de actividad se produjo el jueves y el viernes, y adem?s parece que la proporci?n de retuits fue m?s alta por la tarde, veamos si es as?:
-
+Como la API permite importar la fecha y hora del tuit, podemos ver en qué momentos se produjo más actividad,
+y se ve claramente cómo la actividad se disparó durante los cuatro días que duró el congreso. En otros análisis anteriores se veía cómo el ratio entre retweets y tweets originales es más alta por las tardes, veamos si esto también ocurrió en SIBECOL:
 
 ```{r echo=FALSE, warning=FALSE, dpi =250}
 tweets$bin <- cut(as.numeric(tweets$created_at), breaks = 70)
@@ -89,26 +84,27 @@ tweets %>% group_by(bin) %>%
 
 ```
 
-Efectivamente, el ratio retweets/tweets originales es m?s alto por la tarde, y es que no ?ramos pocos los que consult?bamos los **highlights** de la jornada al llegar a casa por la tarde, retuiteando lo que nos parecia mas interesante. De entre los `r nrow(tweets)` tuits con la etiqueta #AEETMED que se generaron durante la semana pasada, estos fueron los 3 m?s retuiteados:
+Tal y como esperábamos, el ratio retweets/tweets originales es más alto por la tarde (muchos aprovechan la tarde/noche para repasar lo que se ha dicho durante el día y retuitar lo más interesante), aunque lo curioso es que la tendencia parece menor que en congresos anteriores, sin que me atreva a adivinar la causa. De entre los `r nrow(tweets)` tuits con la etiqueta #SIBECOL2019 que se generaron durante la semana pasada, estos fueron los 3 más retuiteados:
 
 ```{r top-rt, echo=FALSE, results='asis'}
 render_tweet <- function(dt, row) {
-    screen_name <- dt[i, "screen_name"]
-    id <- format(dt[i, "id"], scientific = FALSE)
-    txt <- dt[i, "text"]
-    created <- format(dt[i, "created"], "%Y-%m-%d")
-    n_fav <- dt[i, "favoriteCount"]
-    n_retweets <- dt[i, "retweetCount"]
-    cat("<blockquote class=\"twitter-tweet\" lang=\"en\"> \n",
-        "<p lang=\"en\" dir=\"ltr\">",
-        txt,
-        "</p>&mdash; ",
-        "<a href=\"https://twitter.com/", screen_name, "\">", screen_name, "</a>", "&nbsp;|&nbsp;",
-        "<a href=\"https://twitter.com/",
-        screen_name, "/status/", id, "\"> ", created, "</a> &nbsp;|&nbsp;",
-        n_retweets, " retweets, ",  n_fav, " favorites. </blockquote>",
-        "\n \n",
-        sep = "")
+    dt[i,"status_url"]
+    # screen_name <- dt[i, "screen_name"]
+    # id <- format(dt[i, "id"], scientific = FALSE)
+    # txt <- dt[i, "text"]
+    # created <- format(dt[i, "created"], "%Y-%m-%d")
+    # favorite_count <- dt[i, "favorite_count"]
+    # retweet_count <- dt[i, "retweet_count"]
+    # cat("<blockquote class=\"twitter-tweet\" lang=\"en\"> \n",
+    #     "<p lang=\"en\" dir=\"ltr\">",
+    #     txt,
+    #     "</p>&mdash; ",
+    #     "<a href=\"https://twitter.com/", screen_name, "\">", screen_name, "</a>", "&nbsp;|&nbsp;",
+    #     "<a href=\"https://twitter.com/",
+    #     screen_name, "/status/", id, "\"> ", created, "</a> &nbsp;|&nbsp;",
+    #     retweet_count, " retweets, ",  favorite_count, " favorites. </blockquote>",
+    #     "\n \n",
+    #     sep = "")
 }
 
 
@@ -117,7 +113,6 @@ render_tweet <- function(dt, row) {
 
 top_rt <- data.frame(tweets %>%
     filter(!is_retweet) %>%
-    filter(!screen_name %in% c('meeting_goer')) %>%
     arrange(desc(retweet_count)) %>%
     slice(1:3))
 
@@ -143,7 +138,7 @@ for (i in seq_len(nrow(top_fav))) {
 
 #### Tuiteros m?s activos
 
-Veamos quienes fueron los m?s activos de entre los `r length(unique(ICOPFIRES_tweets$screen_name))` usuarios que tuitearon sobre el congreso utilizando la etiqueta oficial. 
+Veamos quienes fueron los m?s activos de entre los `r length(unique(tweets$screen_name))` usuarios que tuitearon sobre el congreso utilizando la etiqueta oficial. 
 
 ```{r echo = FALSE, dpi = 250}
 # Todos los tweets
@@ -329,7 +324,7 @@ Estas fueron las 50 palabras m?s frecuentes en los tweets etiquetados con #AEETM
 ```{r word-cloud, echo=FALSE, message=FALSE, dpi=250}
 library(wordcloud)
 
-pal <- wes_palette("Darjeeling", 8, type = "continuous") #brewer.pal(8, "Dark2")
+pal <- wesanderson::wes_palette("Darjeeling1", 8, type = "continuous") #brewer.pal(8, "Dark2")
 
 tweets %>%
   filter(!is_retweet) %>%
