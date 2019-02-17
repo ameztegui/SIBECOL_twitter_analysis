@@ -18,6 +18,8 @@ library(wesanderson)
 library(shiny)
 library(lubridate)
 library(RColorBrewer)
+library(blogdown)
+library(viridis)
 
 tweets <- readRDS("./data/retweets.rds")
 tweets$created <- as_datetime(tweets$created_at)
@@ -86,42 +88,30 @@ tweets %>% group_by(bin) %>%
 
 Tal y como esperábamos, el ratio retweets/tweets originales es más alto por la tarde (muchos aprovechan la tarde/noche para repasar lo que se ha dicho durante el día y retuitar lo más interesante), aunque lo curioso es que la tendencia parece menor que en congresos anteriores, sin que me atreva a adivinar la causa. De entre los `r nrow(tweets)` tuits con la etiqueta #SIBECOL2019 que se generaron durante la semana pasada, estos fueron los 3 más retuiteados:
 
-```{r top-rt, echo=FALSE, results='asis'}
-render_tweet <- function(dt, row) {
-    dt[i,"status_url"]
-    # screen_name <- dt[i, "screen_name"]
-    # id <- format(dt[i, "id"], scientific = FALSE)
-    # txt <- dt[i, "text"]
-    # created <- format(dt[i, "created"], "%Y-%m-%d")
-    # favorite_count <- dt[i, "favorite_count"]
-    # retweet_count <- dt[i, "retweet_count"]
-    # cat("<blockquote class=\"twitter-tweet\" lang=\"en\"> \n",
-    #     "<p lang=\"en\" dir=\"ltr\">",
-    #     txt,
-    #     "</p>&mdash; ",
-    #     "<a href=\"https://twitter.com/", screen_name, "\">", screen_name, "</a>", "&nbsp;|&nbsp;",
-    #     "<a href=\"https://twitter.com/",
-    #     screen_name, "/status/", id, "\"> ", created, "</a> &nbsp;|&nbsp;",
-    #     retweet_count, " retweets, ",  favorite_count, " favorites. </blockquote>",
-    #     "\n \n",
-    #     sep = "")
-}
-
-
-
-
-
+```{r, echo = F}
 top_rt <- data.frame(tweets %>%
     filter(!is_retweet) %>%
     arrange(desc(retweet_count)) %>%
     slice(1:3))
 
-for (i in seq_len(nrow(top_rt))) {
-    render_tweet(top_rt, i)
-}
-```
+rt1 <- top_rt[1,"status_id"]
+rt2 <- top_rt[2,"status_id"]
+rt3 <- top_rt[3,"status_id"]
 
-Y estos los 3 m?s marcados como favoritos:
+```
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">👩
+💻👩
+🔬 Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting 🌿🦀🦋<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">.<a href="https://twitter.com/FrancescPeters?ref_src=twsrc%5Etfw">@FrancescPeters</a> : &quot;In 2019 we are celebrating the centenary of Prof. Ramon Margalef. Margalef was a mostly self- made scientist with an innate curiosity and ability to relate observations and derive theoretical trends and generalities.&quot;<a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <br><br>✍️🔗<a href="https://t.co/u8B03hMx2f">https://t.co/u8B03hMx2f</a> <a href="https://t.co/fgNyuUR7rb">pic.twitter.com/fgNyuUR7rb</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1090572928184475648?ref_src=twsrc%5Etfw">30 de enero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+Y estos los 3 más marcados como favoritos:
 
 ```{r top-fav, echo=FALSE, results='asis'}
 top_fav <- data.frame(tweets %>%
@@ -129,16 +119,27 @@ top_fav <- data.frame(tweets %>%
   arrange(desc(favorite_count)) %>%
   slice(1:3))
 
-for (i in seq_len(nrow(top_fav))) {
-    render_tweet(top_fav, i)
-}
+fv1 <- top_fav[1,"status_id"]
+fv2 <- top_fav[2,"status_id"]
+fv3 <- top_fav[3,"status_id"]
 
 
 ```
 
-#### Tuiteros m?s activos
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">👩
+💻👩
+🔬 Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Veamos quienes fueron los m?s activos de entre los `r length(unique(tweets$screen_name))` usuarios que tuitearon sobre el congreso utilizando la etiqueta oficial. 
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting 🌿🦀🦋<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">What a great session and lineup of speakers at TS05 <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <a href="https://twitter.com/sibecol?ref_src=twsrc%5Etfw">@sibecol</a> Thanks ever so much to all them contributing superb talks on many aspects of ecological networks <a href="https://t.co/EJxV1WJKQs">pic.twitter.com/EJxV1WJKQs</a></p>&mdash; Pedro Jordano (@pedro_jordano) <a href="https://twitter.com/pedro_jordano/status/1093545713336766464?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Como vemos, es prácticamente un monopolio de la cuenta oficial [@sibecol](), en el que sólo se cuela el tuit de [Pedro Jordano] sobre la sesión de redes ecológicas.
+
+### Tuiteros más activos
 
 ```{r echo = FALSE, dpi = 250}
 # Todos los tweets
@@ -188,12 +189,17 @@ top_orig_users %>% slice(1:30) %>%
 
 ```
 
-Si consideramos todos los tuits, las m?s prol?ficas fueron la cuenta de la [AEET](http://twitter.com/_AEET_) y la de la paleont?loga [AR G?mez-Cano](http://twitter.com/argcPALEO). En cambio, si s?lo consideramos los tuits originales, gana por goleada la paleoec?loga [Graciela Gil Romera](http://twitter.com/gilromera), con m?s de 40 tuits durante el congreso. Parece que lo *paleo* estuvo muy activo.
+Y es que la cuenta oficial de @sibecol echó humo durante los días del congreso. Si miramos el número de tuits emitidos, @sibecol tuiteo alrededor de 8 veces más que la siguiente cuenta más activa. Sin embargo, la myor parte de esa actividad se debe a los retuits, y si sólo retenemos los tuits "originales" la cuenta más activa fue la de la investigadora Graciela Gil Romera, a quien tuve el placer de desvirtualizar en este congreso, y quien además de tuitear un montón tuvo tiempo de hacer unos preciosos dibujos de las charlas a las que asistía. 
+
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">She concluded that higher functional diversity is observed in the drier end of forests and the main driver is climate. I just loved imagining those forests! <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <a href="https://t.co/k9uZG9JuD3">pic.twitter.com/k9uZG9JuD3</a></p>&mdash; Graciela Gil-Romera (@gilromera) <a href="https://twitter.com/gilromera/status/1093109918050254848?ref_src=twsrc%5Etfw">6 de febrero de 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+Tras Graciela, la cuenta más activa sí que fue la de SIBECOL, seguida de Ángel Borja Yerro y Mabdelaziz Moha, conmigo mismo en un honroso quinto lugar.
 
 
-### Usuarios m?s populares
+### Usuarios más populares
 
-Podemos ver qu? usuarios tuvieron m?s repercusi?n analizando la media de RT y FAVs que recibi? cada usuario. (Nota: las figuras de abajo solo incluyen usuarios que han tuiteado mas de 3 veces, y no incluyen retuits).
+Pero como todo en la vida, hay usuarios con más tirón que otros, y podemos determinar el "éxito" tuitero midiendo el número de favoritos y/o retweets por tuit emitido. En este sentido, destacan por número de favoritos/tuit, las cuentas de Oscar Godoy, Pedro Jordano y Francisco Rodriguez, que recibieron una media de más de 25 favs por cada vez que tuitearon usando el hashtag del congreso. En cuanto a retuits, vuelve a ganar la cuenta oficial de SIBECOL, aunque seguidos de cerca por los chicos de @ecomandanga y, una vez más, Francisco Rodríguez.
 
 
 ```{r, echo=FALSE, include =FALSE, dpi=250}
@@ -216,14 +222,14 @@ most_fav$screen_name <- reorder(most_fav$screen_name,
                                sort)
 
 
-most_fav %>% 
-    transform(screen_name = reorder(screen_name, -n_fav)) %>% # Order descending
-    ggplot(aes(screen_name, n_fav)) + 
-    geom_bar(stat = "identity") +
-    xlab("Usuario") +
-    ylab("Num. favoritos") +
-    theme_bw() + 
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# most_fav %>% 
+#     transform(screen_name = reorder(screen_name, -n_fav)) %>% # Order descending
+#     ggplot(aes(screen_name, n_fav)) + 
+#     geom_bar(stat = "identity") +
+#     xlab("Usuario") +
+#     ylab("Total favoritos") +
+#     theme_bw() + 
+#     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
@@ -240,14 +246,14 @@ most_rt$screen_name <- reorder(most_rt$screen_name,
                               sort)
 
 
-most_fav %>% 
-    transform(screen_name = reorder(screen_name, -n_rt)) %>% # Order descending
-    ggplot(aes(screen_name, n_rt)) + 
-    geom_bar(stat = "identity") +
-    xlab("Usuario") +
-    ylab("Num. retweets") +
-    theme_bw() + 
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# most_fav %>% 
+#     transform(screen_name = reorder(screen_name, -n_rt)) %>% # Order descending
+#     ggplot(aes(screen_name, n_rt)) + 
+#     geom_bar(stat = "identity") +
+#     xlab("Usuario") +
+#     ylab("Num. total retweets") +
+#     theme_bw() + 
+#     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r echo=FALSE, dpi=250}
@@ -265,7 +271,7 @@ hi_mean_fav$screen_name <- reorder(hi_mean_fav$screen_name,
 most_fav %>% 
     transform(screen_name = reorder(screen_name, -mean_fav)) %>% # Order descending
     ggplot(aes(screen_name, mean_fav)) + 
-        ylab("Numero medio de favoritos") +
+        ylab("Numero medio de favoritos/tuit") + xlab("Usuario")+
     geom_bar(stat = "identity") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -287,16 +293,14 @@ hi_mean_rt$screen_name <- reorder(hi_mean_rt$screen_name,
 most_fav %>% 
     transform(screen_name = reorder(screen_name, -mean_rt)) %>% # Order descending
     ggplot(aes(screen_name, mean_rt)) + 
-        ylab("Numero medio de retuits") +
+        ylab("Numero medio de retuits/tuit") + xlab("Usuario") +
     geom_bar(stat = "identity") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 ```
-Parece que no hay grandes "superestrellas" que concentren la mayor parte de los RT y FAVs, sino que hay un gradiente bastante suave, aunque destacan perfiles de ec?logos muy reconocidos como [JC Svenning](http://twitter.com/JCSvenning), [Fernando Maestre](http://twitter.com/Maestrelab) o [Pedro Jordano](http://twitter.com/pedro_jordano), entre otros.
-
-De hecho podr?amos juntar RT + Favs como un indicador del impacto, y ver si los que m?s impacto tuvieron son tambi?n los que m?s tuitearon
+Curiosamente, algunos de los que más tuiteamos durante el congreso nos encontramos casi en la cola de esta clasificación, por lo que podríamos pensar que tuitear mucho penalize este ránking (no todos los tuits pueden tener el mismo éxito). Para comprobarlo, sumamos RT + Favs como un indicador del impacto, y vemos si los que más impacto tuvieron son los que menos tuitearon:
 ```{r echo=F,dpi=250}
 impact %>% 
         mutate(impact = n_fav + n_rt,
@@ -309,40 +313,15 @@ impact %>%
      xlab("Usuario") +
     ylab("Impacto (RT + Fav)") +
   theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))  + 
-  scale_fill_distiller(palette = "Spectral",
-                       trans = "log", breaks = c(1, 5, 10, 50),
-                       name="impacto/tweet")
-```
-
-En l?neas generales vemos que no es as?, y que no parece haber relaci?n entre el n?mero de tuits y el impacto medio de cada tuit.
-
-
-### Word cloud
-
-Estas fueron las 50 palabras m?s frecuentes en los tweets etiquetados con #AEETMED
-
-```{r word-cloud, echo=FALSE, message=FALSE, dpi=250}
-library(wordcloud)
-
-pal <- wesanderson::wes_palette("Darjeeling1", 8, type = "continuous") #brewer.pal(8, "Dark2")
-
-tweets %>%
-  filter(!is_retweet) %>%
-  .$text %>% paste(collapse = "") %>%
-  gsub("(@|\\#)\\w+", "", .) %>%  ## remove mentions/hashtags
-  gsub("https?\\:\\/\\/\\w+\\.\\w+(\\/\\w+)*", "", .) %>% ## remove urls
-  gsub("\\bthe\\b", "", .) %>% ## remove the
-  gsub("amp", "", .) %>%  ## remove &
-  gsub("\\bspp\\b", "species", .) %>% ## replace spp by species
-  iconv(., from = "latin1", to = "UTF-8", sub = "") %>% ## remove emojis
-  wordcloud(max.words = 50, colors = pal, random.order = FALSE, scale = c(3, 0.5))
+    scale_fill_viridis("impacto/tweet", option = "viridis")
 
 ```
- Parece que efectivamente, en Sevilla hubo "grandes charlas" ;-), pero se voislumbra por aqu? algunos de los temas estrella que ya ha definido Ignasi Bartomeus en el [blog de Journal of Ecology](https://jecologyblog.wordpress.com/2017/02/07/aaet-medecos/): sequ?a, fuego, e interacciones entre especies.
+
+Quitando la cuenta del congreso, sí que parece que los usuarios que más tuiteamos tuvimos menor impacto por tuit (colores más oscuros) que algunos que se reservaron más a la hora de tuitear, por lo que parece que en este caso, menos puede ser más.
 
 ### Menciones: twitter como plataforma de conversaci?n
 
-Una de las cosas buenas de twitter es cuando se montan debates entre varios usuarios sobre un tema concreto, a veces muy interesantes a pesar de lo limitado de los 140 caracteres, y de hecho no ser?a la primera vez que una de esas conversaciones deriva en un post de Forestalia. Usando las capacidades de las expresiones regulares (regexp) podemos identificar los usuarios que fueron mencionados m?s a menudo durante el congreso. 
+Una de las cosas buenas de twitter es cuando se montan debates entre varios usuarios sobre un tema concreto, a veces muy interesantes a pesar de lo limitado de los 140 caracteres, y de hecho no sería la primera vez que una de esas conversaciones deriva en un post de Forestalia. Usando las capacidades de las expresiones regulares (regexp) podemos identificar los usuarios que fueron mencionados m?s a menudo durante el congreso. 
 
 ```{r, echo =F, dpi=250}
 # Note: this approach does not capture conversations in the form of "quoted" retweets, as they appear as hyperlinks in the text field. This also does not count retweets as mentions.
