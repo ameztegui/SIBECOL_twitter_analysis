@@ -1,5 +1,5 @@
 ---
-title: 'Congresos cient?ficos y Twitter (III): un an√°lisis de #SIBECOL2019'
+title: 'Congresos cientÌficos y Twitter (IV): un an·lisis de #SIBECOL2019'
 output:
   html_document: default
 ---
@@ -10,7 +10,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo=FALSE, results='hide', message=FALSE}
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 
 library(knitr)
 library(tidyverse)
@@ -26,26 +26,20 @@ tweets$created <- as_datetime(tweets$created_at)
 
 ```
 
-La semana pasada, del 4 al 7 de febrero, se celebr√≥ en Barcelona la primera edici√≥n del [congreso del SIBECOL], la Sociedad Ib√©rica de Ecolog√≠a, que a√∫na varias sociedades ecol√≥gicas ib√©ricas, tanto espa√±olas como portuguesas. Como dec√≠a, era la primera edici√≥n, ya que la sociedad en s√≠ se constituy√≥ hace apenas unos meses, y funcion√≥ tambi√©n como el congreso bianual de la [AEET.]
+La semana pasada, del 4 al 7 de febrero, se celebrÛ en Barcelona la primera ediciÛn del [congreso del SIBECOL](http://congresosociedadibericaecologia2019.net/), la [Sociedad IbÈrica de EcologÌa](http://www.sibecol.org/es/), que a˙na varias sociedades ecolÛgicas ibÈricas, tanto espaÒolas como portuguesas. Como decÌa, era la primera ediciÛn, ya que la sociedad en sÌ se constituyÛ hace apenas unos meses, y funcionÛ tambiÈn como el congreso bianual de la [AEET](http://www.aeet.org/).
 
-Siendo en Barcelona, hubiera sido un pecado perd√©rselo, y adem√°s el primer d√≠a organizaba un workshop junto a [V√≠ctor Granda] y el jueves participaba c√≥mo autor en dos presentaciones. Entre eso, el inter√©s de las charlas, y los amigos que sab√≠a que asistir√≠an, al final acabe yendo cada uno de los cuatro d√≠as. La actividad fue fren√©tica, con hasta 10 sesiones paralelas, y la actividad en redes sociales no lo fue menos. As√≠ que por no perder las tradiciones, asqu√≠ os traigo el an√°lisis de lo que dio de si el congreso en Twitter, donde se pod√≠a seguir con la etiqueta [#SIBECOL2019].
+Siendo en Barcelona, hubiera sido un pecado perdÈrselo, y adem·s el primer dÌa organizaba un workshop junto a [VÌctor Granda](https://twitter.com/malditobarbudo) y el jueves participaba cÛmo autor en dos presentaciones. Entre eso, el interÈs de las charlas, y los amigos que sabÌa que asistirÌan, al final acabÈ yendo cada uno de los cuatro dÌas. La actividad fue frenÈtica, con hasta 10 sesiones paralelas, y la actividad en redes sociales no lo fue menos. AsÌ que por no perder las tradiciones, asquÌ os traigo el an·lisis de lo que dio de si el congreso en Twitter, donde se podÌa seguir con la etiqueta [#SIBECOL2019](https://twitter.com/hashtag/SIBECOL2019?src=hash).
 
-Tengo que reconocer que estuve a punto de no hacer esta entrada, ya que [Francisco Rodriguez] mont√≥ esta gran app donde se recog√≠an las principales estad√≠sticas en tiempo real, pero por petici√≥n popular - al menos de unos cuantos, que quer√≠an ver el an√°lisis de redes que he hechi en otros congresos anteriores ([ICOPFIRES]; [MEDECOS]; [7CFE]) - al final me he animado. ¬°Espero que os guste!
+Tengo que reconocer que estuve a punto de no hacer esta entrada, ya que [Francisco Rodriguez-S·nchez](https://twitter.com/frod_san) montÛ esta gran [app](https://pakillo.github.io/tweets_SIBECOL2019/) donde se recogÌan las principales estadÌsticas en tiempo real, pero por peticiÛn popular - al menos de unos cuantos, que querÌan ver el an·lisis de redes que he hechi en otros congresos anteriores ([ICOPFIRES](http://www.forestaliablog.com/2017/02/congresos-cientificos-y-twitter-ii-un-analisis-de-icopfires/); [AEET-MEDECOS](http://www.forestaliablog.com/2017/02/congresos-cientificos-y-twitter-i-un-analisis-de-aeetmed/); [7CFE](http://www.forestaliablog.com/2017/07/congresos-cientificos-y-twitter-iii-un-analisis-del-7cfe/)) - al final me he animado. °Espero que os guste!
 
-Como hago siempre, al C√©sar lo que es del C√©sar. El c√≥digo que uso para generar estos an√°lisis lo he adaptado de diversas fuentes, en concreto [esta](https://github.com/fmichonneau/evol2015-tweets),  [esta](http://rollinsonecology.com) y [esta](https://github.com/khturner/HashtagISME16). Y agradecimiento especial a Francisco Rodriguez por la app y por pasarme los tweets con el hashtag [#SIBECOL2019]. Finalmente, el c√≥digo RMarkdown usado para generar esta entrada est√°n disponibles [aqu√≠](https://github.com/ameztegui/Hashtag_Analysis). Dicho esto, al l√≠o.
+Como hago siempre, al CÈsar lo que es del CÈsar. El cÛdigo que uso para generar estos an·lisis lo he adaptado de diversas fuentes, en concreto [esta](https://github.com/fmichonneau/evol2015-tweets), [esta](http://rollinsonecology.com) y [esta](https://github.com/khturner/HashtagISME16). Y agradecimiento especial a Francisco Rodriguez por la app y por pasarme los tweets con el hashtag #SIBECOL2019. Finalmente, el cÛdigo RMarkdown usado para generar esta entrada est·n disponibles [aquÌ](https://github.com/ameztegui/SIBECOL_twitter_analysis). Dicho esto, al lÌo.
 
-El n√∫mero total de tweets generados, tweets originales y usuarios que han tuiteado fue sensiblemente mayor que en el √∫ltimo congreso de la [AEET-MEDECOS], y similar al que obtuvimos, por ejemplo, en el pasado [Congreso Forestal Espa√±ol].
-
-
-
-|Descripcion | N
-|------------|---|---|
-|Numero total de tweets generados | `r nrow(tweets)`|
-|Numero total de tweets originales (sin contar retweets): | `r sum(!tweets$is_retweet)`|
-|Numeros de usuarios que han tuiteado: | `r length(unique(tweets$screen_name))`|
+El congreso generÛ un total de `r nrow(tweets)` tweets e `r length(unique(tweets$screen_name))` usuarios, de los que `r sum(!tweets$is_retweet)` fueron tweets originales (es decir, excluyendo retuits). Destaca que estas tres cifras son sensiblemente mayores que las que obtuvimos el ˙ltimo congreso de la [AEET-MEDECOS](http://www.forestaliablog.com/2017/02/congresos-cientificos-y-twitter-i-un-analisis-de-aeetmed/), y similar al que obtuvimos, por ejemplo, en el pasado [Congreso Forestal EspaÒol](http://www.forestaliablog.com/2017/07/congresos-cientificos-y-twitter-iii-un-analisis-del-7cfe/).
 
 
-#### Actividad durante la semana
+
+
+### Actividad durante la semana
 
 
 ```{r echo =FALSE, dpi = 250}
@@ -58,6 +52,7 @@ tweets %>%
     scale_x_datetime(date_breaks = "6 hours",
                      date_labels = "%a %d %H:%M") +
     theme_bw() + 
+    xlab("DÌa y hora") +
     theme(axis.text.x = element_text(angle = 90, hjust = 1),
           legend.position = c(0.85,0.85)) + 
     scale_fill_brewer(type = "qual", palette = "Set1",
@@ -65,8 +60,8 @@ tweets %>%
                       labels=c("Original", "Retweet")) 
 ```
 
-Como la API permite importar la fecha y hora del tuit, podemos ver en qu√© momentos se produjo m√°s actividad,
-y se ve claramente c√≥mo la actividad se dispar√≥ durante los cuatro d√≠as que dur√≥ el congreso. En otros an√°lisis anteriores se ve√≠a c√≥mo el ratio entre retweets y tweets originales es m√°s alta por las tardes, veamos si esto tambi√©n ocurri√≥ en SIBECOL:
+Como la API permite importar la fecha y hora del tuit, podemos ver en quÈ momentos se produjo m·s actividad,
+y se ve claramente cÛmo la actividad se disparÛ durante los cuatro dÌas que durÛ el congreso, aunque ya el domingo previo se aprecia un aumento de la actividad (muchos tuitearon que se estaban desplazando a Barcelona). En otros an·lisis anteriores se veÌa cÛmo el ratio entre retweets y tweets originales es m·s alto por las tardes, veamos si esto tambiÈn ocurriÛ en SIBECOL:
 
 ```{r echo=FALSE, warning=FALSE, dpi =250}
 tweets$bin <- cut(as.numeric(tweets$created_at), breaks = 70)
@@ -76,17 +71,16 @@ tweets %>% group_by(bin) %>%
             retweetsToTweets = sum(is_retweet) / tweets,
             created = min(created_at)) %>%
     ggplot(aes(created, tweets, fill = retweetsToTweets)) +
-    geom_bar(stat = "identity", width = 4000) +
-    scale_x_datetime(date_breaks = "6 hours",
+    geom_bar(stat = "identity", width = 8000) +
+    scale_x_datetime(date_breaks = "12 hours",
                      date_labels = "%a %d %H:%M") +
-    theme_dark() +
+    theme_bw() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-    scale_fill_distiller(palette = "Spectral") +
-        geom_text(x=as.numeric(min(tweets$created))+30000, y = 80, label="#AEETMED", size=4, color="white", fontface="bold")
+    scale_fill_viridis(option = "magma") 
 
 ```
 
-Tal y como esper√°bamos, el ratio retweets/tweets originales es m√°s alto por la tarde (muchos aprovechan la tarde/noche para repasar lo que se ha dicho durante el d√≠a y retuitar lo m√°s interesante), aunque lo curioso es que la tendencia parece menor que en congresos anteriores, sin que me atreva a adivinar la causa. De entre los `r nrow(tweets)` tuits con la etiqueta #SIBECOL2019 que se generaron durante la semana pasada, estos fueron los 3 m√°s retuiteados:
+Tal y como esper·bamos, el ratio retweets/tweets originales es m·s alto por la tarde (muchos aprovechan la tarde/noche para repasar lo que se ha dicho durante el dÌa y retuitar lo m·s interesante), aunque lo curioso es que la tendencia parece menor que en congresos anteriores, sin que me atreva a adivinar la causa. Adem·s, los momentos con mayor proporciÛn de tuits originales fueron por la maÒana de martes y miÈrcoles, durante las charlas plenarias. Aparte de la mayor expectaciÛn que despiertan estas charlas por la calidad de los ponentes, tambiÈn es el ˙nico momento en el congreso en el que sÛlo una persona habla, y el resto Èramos espectadores. De entre los `r nrow(tweets)` tuits con la etiqueta #SIBECOL2019 que se generaron durante la semana pasada, estos fueron los 3 m·s retuiteados:
 
 ```{r, echo = F}
 top_rt <- data.frame(tweets %>%
@@ -99,19 +93,19 @@ rt2 <- top_rt[2,"status_id"]
 rt3 <- top_rt[3,"status_id"]
 
 ```
-<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">üë©
-üíªüë©
-üî¨ Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">????
+????????
+???? Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting üåøü¶Äü¶ã<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting ????????????<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">.<a href="https://twitter.com/FrancescPeters?ref_src=twsrc%5Etfw">@FrancescPeters</a> : &quot;In 2019 we are celebrating the centenary of Prof. Ramon Margalef. Margalef was a mostly self- made scientist with an innate curiosity and ability to relate observations and derive theoretical trends and generalities.&quot;<a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <br><br>‚úçÔ∏èüîó<a href="https://t.co/u8B03hMx2f">https://t.co/u8B03hMx2f</a> <a href="https://t.co/fgNyuUR7rb">pic.twitter.com/fgNyuUR7rb</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1090572928184475648?ref_src=twsrc%5Etfw">30 de enero de 2019</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">.<a href="https://twitter.com/FrancescPeters?ref_src=twsrc%5Etfw">@FrancescPeters</a> : &quot;In 2019 we are celebrating the centenary of Prof. Ramon Margalef. Margalef was a mostly self- made scientist with an innate curiosity and ability to relate observations and derive theoretical trends and generalities.&quot;<a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <br><br>??????????<a href="https://t.co/u8B03hMx2f">https://t.co/u8B03hMx2f</a> <a href="https://t.co/fgNyuUR7rb">pic.twitter.com/fgNyuUR7rb</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1090572928184475648?ref_src=twsrc%5Etfw">30 de enero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
-Y estos los 3 m√°s marcados como favoritos:
+Y estos los 3 m·s marcados como favoritos:
 
 ```{r top-fav, echo=FALSE, results='asis'}
 top_fav <- data.frame(tweets %>%
@@ -126,20 +120,20 @@ fv3 <- top_fav[3,"status_id"]
 
 ```
 
-<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">üë©
-üíªüë©
-üî¨ Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">????
+????????
+???? Almost all women of <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/hashtag/MujeresEnCiencias?src=hash&amp;ref_src=twsrc%5Etfw">#MujeresEnCiencias</a> <a href="https://twitter.com/hashtag/WomenInScience?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInScience</a> <a href="https://twitter.com/hashtag/WomenInSTEM?src=hash&amp;ref_src=twsrc%5Etfw">#WomenInSTEM</a> <a href="https://t.co/Wcq1pGRa7g">pic.twitter.com/Wcq1pGRa7g</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1093575307217522688?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting üåøü¶Äü¶ã<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">Today, more than 600 ecologists are joining to share their scientific knowledge in the 1st Iberian Ecological Society Meeting ????????????<br>Remember to share your experience with <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a>!<a href="https://twitter.com/_AEET_?ref_src=twsrc%5Etfw">@_AEET_</a> <a href="https://twitter.com/PortugalEcology?ref_src=twsrc%5Etfw">@PortugalEcology</a> <a href="https://twitter.com/AIL_limnologia?ref_src=twsrc%5Etfw">@AIL_limnologia</a> <a href="https://t.co/WdZJ6qZvvL">pic.twitter.com/WdZJ6qZvvL</a></p>&mdash; SIBECOL (@sibecol) <a href="https://twitter.com/sibecol/status/1092350838373265408?ref_src=twsrc%5Etfw">4 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">What a great session and lineup of speakers at TS05 <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <a href="https://twitter.com/sibecol?ref_src=twsrc%5Etfw">@sibecol</a> Thanks ever so much to all them contributing superb talks on many aspects of ecological networks <a href="https://t.co/EJxV1WJKQs">pic.twitter.com/EJxV1WJKQs</a></p>&mdash; Pedro Jordano (@pedro_jordano) <a href="https://twitter.com/pedro_jordano/status/1093545713336766464?ref_src=twsrc%5Etfw">7 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Como vemos, es pr√°cticamente un monopolio de la cuenta oficial [@sibecol](), en el que s√≥lo se cuela el tuit de [Pedro Jordano] sobre la sesi√≥n de redes ecol√≥gicas.
+Como vemos, es pr·cticamente un monopolio de la cuenta oficial [@sibecol](https://twitter.com/sibecol), en el que sÛlo se cuela el tuit de [Pedro Jordano](https://twitter.com/pedro_jordano) sobre la sesiÛn tem·tica de redes ecolÛgicas.
 
-### Tuiteros m√°s activos
+### Tuiteros m·s activos
 
 ```{r echo = FALSE, dpi = 250}
 # Todos los tweets
@@ -189,17 +183,17 @@ top_orig_users %>% slice(1:30) %>%
 
 ```
 
-Y es que la cuenta oficial de @sibecol ech√≥ humo durante los d√≠as del congreso. Si miramos el n√∫mero de tuits emitidos, @sibecol tuiteo alrededor de 8 veces m√°s que la siguiente cuenta m√°s activa. Sin embargo, la myor parte de esa actividad se debe a los retuits, y si s√≥lo retenemos los tuits "originales" la cuenta m√°s activa fue la de la investigadora Graciela Gil Romera, a quien tuve el placer de desvirtualizar en este congreso, y quien adem√°s de tuitear un mont√≥n tuvo tiempo de hacer unos preciosos dibujos de las charlas a las que asist√≠a. 
+Y es que la cuenta oficial de @sibecol echÛ humo durante los dÌas del congreso. Si miramos el n˙mero de tuits emitidos, @sibecol tuiteÛ alrededor de 8 veces m·s que la siguiente cuenta m·s activa. Sin embargo, la myor parte de esa actividad se debe a los retuits, y si sÛlo retenemos los tuits "originales" la cuenta m·s activa fue la de la investigadora [Graciela Gil Romera](https://twitter.com/gilromera), a quien tuve el placer de desvirtualizar en este congreso, y quien adem·s de tuitear un montÛn tuvo tiempo de hacer unos preciosos dibujos de casi todas las charlas a las que asistÌa. °Impresionante!
 
 <blockquote class="twitter-tweet" data-lang="es"><p lang="en" dir="ltr">She concluded that higher functional diversity is observed in the drier end of forests and the main driver is climate. I just loved imagining those forests! <a href="https://twitter.com/hashtag/SIBECOL2019?src=hash&amp;ref_src=twsrc%5Etfw">#SIBECOL2019</a> <a href="https://t.co/k9uZG9JuD3">pic.twitter.com/k9uZG9JuD3</a></p>&mdash; Graciela Gil-Romera (@gilromera) <a href="https://twitter.com/gilromera/status/1093109918050254848?ref_src=twsrc%5Etfw">6 de febrero de 2019</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Tras Graciela, la cuenta m√°s activa s√≠ que fue la de SIBECOL, seguida de √Ångel Borja Yerro y Mabdelaziz Moha, conmigo mismo en un honroso quinto lugar.
+Tras Graciela, la cuenta m·s activa sÌ que fue la de SIBECOL, seguida de la del Ècologo marino [¡ngel Borja Yerro](https://twitter.com/AngelBorjaYerro) y el biÛlogo evolutivo [Mohamed Abdelaziz](https://twitter.com/mabdelaziz_moha), [conmigo mismo](https://twitter.com/multivac42) en un honroso quinto lugar.
 
 
-### Usuarios m√°s populares
+### Usuarios m·s populares
 
-Pero como todo en la vida, hay usuarios con m√°s tir√≥n que otros, y podemos determinar el "√©xito" tuitero midiendo el n√∫mero de favoritos y/o retweets por tuit emitido. En este sentido, destacan por n√∫mero de favoritos/tuit, las cuentas de Oscar Godoy, Pedro Jordano y Francisco Rodriguez, que recibieron una media de m√°s de 25 favs por cada vez que tuitearon usando el hashtag del congreso. En cuanto a retuits, vuelve a ganar la cuenta oficial de SIBECOL, aunque seguidos de cerca por los chicos de @ecomandanga y, una vez m√°s, Francisco Rodr√≠guez.
+Pero como todo en la vida, hay usuarios con m·s tirÛn que otros, y podemos determinar el "Èxito" tuitero midiendo el n˙mero de favoritos y/o retweets por tuit emitido. En este sentido, destacan por n˙mero de favoritos/tuit, las cuentas de [Oscar Godoy](https://twitter.com/Eco_Godoy), [Pedro Jordano](https://twitter.com/pedro_jordano) y [Francisco Rodriguez-S·nchez](https://twitter.com/frod_san), que recibieron una media de m·s de 25 favs por cada vez que tuitearon usando el hashtag del congreso. En cuanto a retuits, vuelve a ganar la cuenta oficial de SIBECOL, aunque seguidos de cerca por los chicos de [@ecomandanga](https://twitter.com/ecomandanga) y, una vez m·s, [Francisco RodrÌguez](https://twitter.com/frod_san).
 
 
 ```{r, echo=FALSE, include =FALSE, dpi=250}
@@ -300,7 +294,9 @@ most_fav %>%
 
 
 ```
-Curiosamente, algunos de los que m√°s tuiteamos durante el congreso nos encontramos casi en la cola de esta clasificaci√≥n, por lo que podr√≠amos pensar que tuitear mucho penalize este r√°nking (no todos los tuits pueden tener el mismo √©xito). Para comprobarlo, sumamos RT + Favs como un indicador del impacto, y vemos si los que m√°s impacto tuvieron son los que menos tuitearon:
+
+Curiosamente, algunos de los que m·s tuiteamos durante el congreso nos encontramos casi en la cola de esta clasificaciÛn, por lo que podrÌamos pensar que tuitear mucho penalice este r·nking (no todos los tuits pueden tener el mismo Èxito). Para comprobarlo, sumamos RT + Favs como un indicador del impacto, y vemos si los que m·s impacto tuvieron son los que menos tuitearon:
+
 ```{r echo=F,dpi=250}
 impact %>% 
         mutate(impact = n_fav + n_rt,
@@ -317,11 +313,11 @@ impact %>%
 
 ```
 
-Quitando la cuenta del congreso, s√≠ que parece que los usuarios que m√°s tuiteamos tuvimos menor impacto por tuit (colores m√°s oscuros) que algunos que se reservaron m√°s a la hora de tuitear, por lo que parece que en este caso, menos puede ser m√°s.
+Quitando la cuenta del congreso, que es un caso especial, sÌ que parece que los usuarios que m·s tuiteamos tuvimos menor impacto por tuit (colores m·s oscuros), mientras que algunos que se reservaron m·s a la hora de tuitear tuvieron m·s repercusion por tuit. AsÌ que por lo que parece en este caso como en tantos otros, menos puede ser m·s.
 
-### Menciones: twitter como plataforma de conversaci?n
+### Menciones: twitter como plataforma de conversaciÛn
 
-Una de las cosas buenas de twitter es cuando se montan debates entre varios usuarios sobre un tema concreto, a veces muy interesantes a pesar de lo limitado de los 140 caracteres, y de hecho no ser√≠a la primera vez que una de esas conversaciones deriva en un post de Forestalia. Usando las capacidades de las expresiones regulares (regexp) podemos identificar los usuarios que fueron mencionados m?s a menudo durante el congreso. 
+Una de las cosas buenas de twitter es cuando se montan debates entre varios usuarios sobre un tema concreto, a veces muy interesantes a pesar de lo limitado de los 140 caracteres, y de hecho no serÌa la primera vez que una de esas conversaciones deriva en un post de Forestalia. Usando las capacidades de las expresiones regulares (regexp) podemos identificar los usuarios que fueron mencionados m·s a menudo durante el congreso. 
 
 ```{r, echo =F, dpi=250}
 # Note: this approach does not capture conversations in the form of "quoted" retweets, as they appear as hyperlinks in the text field. This also does not count retweets as mentions.
@@ -345,12 +341,11 @@ data.frame(screen_name = unlist(mentions)) %>% tbl_df %>%
  
 ```
 
-Pues aparte de los organizadores, y la Universidad de Sevilla, instituci?n donde se celebr?, parece que los usuarios m?s mencionados fueron F.Maestre y el grupo de paleocolog?a y vertebrados de UCM y CSIC. ??Otra vez la *paleo*!
-
+Pues aparte de los organizadores, la cuenta de la AsociaciÛn EspaÒola de EcologÌa Terrestre y otras institucionales, los usuarios m·s mencionados fueron [Oscar Godoy](https://twitter.com/Eco_Godoy), que se destapa como estrella del congreso (su charla plenaria fue magnÌfica, la verdad), y Carlos Duarte, autor de la charla inaugural el lunes por la tarde (en esta no estuve). 
 
 ### Twitter como red social
 
-Lo que hace ?nicas a las menciones de twitter respecto a otras redes sociales como facebook, es que se pueden rastrear las menciones de ida y vuelta. Por lo tanto, una vez extra?das las menciones podemos explorar las din?micas de las conversaciones mediante un grafo, representando cada usuario como un v?rtice y las menciones como las aristas entre los v?rtices. Aqu? quiero mencionar expresamente que esta parte del c?digo est? tomada del an?lisis que hizo [Keith H.Turner](http://twitter.com/kay_aych) para el [ISME2016](https://github.com/khturner/HashtagISME16). La pena es que blogger no me permite insertar un gr?fico interactivo como el que generan estas funciones, as? que los que quer?is verlo tendr?is que ir a GitHub.
+Lo bueno de cÛmo funciona la API de twitter es que  podemos rastrear las menciones de ida y vuelta. Por lo tanto, una vez extraÌdas las menciones podemos explorar las din·micas de las conversaciones mediante un grafo, representando cada usuario como un vÈrtice y las menciones como las aristas entre los vÈrtices. La pena es que blogger no me permite insertar un gr·fico interactivo como el que generan estas funciones, asÌ que he colgado una versiÛn interactiva de esta entrada [aquÌ](https://sibecol2019-twitter.netlify.com/).
 
 ```{r echo =FALSE, message=F, warning = F}
 
@@ -395,9 +390,11 @@ mention_graph_vn <- toVisNetworkData(mention_graph)
 
 ```
 
-La verdad es que hay mucha informaci?n en este gr?fico. Destaca que una buena parte de las conversaciones pas? por la cuenta oficial de la AEET, y tambi?n llaman la atenci?n unas pocas cuentas que parecen tener una importante red de contactos en twitter (F.Maestre, JC. Svenning, P. Jordano, G. Gil-Romera) frente a las cuentas de los exteriores, que difundieron informaci?n sobre el congreso (por eso aparecen en azul) a numerosas personas que s?lo recibieron menciones, pero no tuitearon (en amarillo).
+La verdad es que hay mucha informaciÛn en este gr·fico, se hace incluso difÌcil de interpretar. SÌ que destaca claramente que una buena parte de las conversaciones pasa por la cuenta oficial de SIBECOL, y tambiÈn llaman la atenciÛn algunas flechas muy gordas que van hacia ella, lo que representa usuarios que citaban a Sibecol con frecuencia. Pero tambiÈn destaca que hay algunos usuarios que aglutinan menciones (es el caso de la cuenta de la [AEET](https://twitter.com/_aeet_), de la de la [facultad de BiologÌa de la UB](https://twitter.com/BiologiaUB), o en usuarios individuales, de Oscar Godoy o Graciela Gil-Romera), mientras que otros usuarios, situados en la parte de fuera del gr·fico, funcionan m·s como altavoces, citando a numerosas personas que sÛlo recibieron menciones, pero no tuitearon (en amarillo). Este patrÛn ya lo vimos en anteriores congresos, y creo que tiene bastante sentido, ya que muchos usuarios citan a otros para informarles de lo que van viendo, sin que estos ˙ltimos lleguen a responder o retuitear.
 
-Incluso podr?amos aplicar an?lisis de cluster de grafos para ver en cuantos grupos se puede clasificar la tuitesfera del AEETMED.
+### Grupos en Sibecol19
+
+Como hicimos las otras veces, podemos aplicar an·lisis de cluster de grafos para ver en cu·ntos grupos se puede clasificar la tuitesfera del SIBECOL. 
 
 ```{r echo =F, warning = FALSE}
 cw <- cluster_walktrap(mention_graph)
@@ -412,13 +409,8 @@ visNetwork(nodes = mention_graph_vn$nodes, edges = mention_graph_vn$edges,
   visOptions(highlightNearest = TRUE)
 ```
 
-Usando los par?metros por defecto de la funci?n random walk, el grafo de menciones se divide en 23 grupos distintos, algunos muy numerosos, otros formados s?lo por dos usuarios. Es un gr?fico superchulo, donde se puede ver como los colegas de la misma instituci?n tienden a agruparse juntos, mientras que hay individuos que aparecen como puentes entre dos grupos m?s amplios. Os animo a que os busqu?is y valoreis si el algortimos os ha clasificado bien u os habeis llevado una sorpresa. La verdad es que ver los datos asi hace valorar el paper de tuiter como difusor de la actividad en una conferencia!.
+Usando los par·metros por defecto de la funciÛn random walk (no conozco la funciÛn como para atreverme a tocar nada), sorprende el alto n˙mero de grupos que se generan (58, frente a 23 en otros congresos), y es que tampoco se ven grupos muy definidos, lo que habla bien de la interdisiciplinariedad de este congreso. Si acaso, podemos destacar un grupo de usuarios que sobre todo interacciona con la cuenta oficial del congreso (en azul claro), uno asociado a la cuenta de [Graciela Gil-Romera](https://twitter.com/gilromera) y la *paleo* (que le citan a ella y a los que cita ella), uno asociado a [JosÈ Luis Quero](https://twitter.com/ozeluiquero) y un grupo de investigadores cordobeses o de la Universidad de CÛrdoba. TambiÈn se ve un grupo muy diferenciado relacionado con la patologÌa, y que se basa en las menciones de [Jon‡s Oliva](https://twitter.com/JonsOliva1), uno de ecologÌa marina asociado a la cuenta de ([Joan GÌmenez])https://twitter.com/Joan_Gimenez), y uno asociado a la [Universidad de Huelva](https://twitter.com/UniHuelva) y su proyecto [*Bosque viejos frente al cambio clim·tico*](https://twitter.com/OldGrowth_UHU) en el que hay varias cuentas asociadas a la dendroecÛlogÌa y usuarios como [LuÌs MatÌas](https://twitter.com/L_Matias_) o [Enrique Andivia](https://twitter.com/KikeAndivia). Eso por citar sÛlo unos cuantos, seguro que vosotros veis m·s que yo, asÌ que °os animo a que os busquÈis y me dejÈis vuestras apreciaciones en los comentarios!
 
+Esto es todo lo que da de si este an·lisis, espero que os haya gustado, y ya sabÈis que el cÛdigo usado se encuentra disponible en [GitHub](https://github.com/ameztegui/SIBECOL_twitter_analysis).Como he dicho antes, como Wordpress no permite los gr·ficos interactivos, podÈis consultarlos [aquÌ](https://sibecol2019-twitter.netlify.com/). °Pero luego volved para dejarme un comentario! 
 
-
-NOTA FINAL:
-El codigo para generar el documento fue desarrollado originalmente por [Francois Michonneau](https://github.com/fmichonneau) ([fmic_](https://twitter.com/fmic_) en Twitter) para el congreso de Evoluci?n de 2015, y se puede encontrar [aqu?](https://github.com/fmichonneau/evol2015-tweets). El codigo ha sido posteriormente  [modificado](https://github.com/jlehtoma/iccb2015-tweets/blob/gh-pages/index.Rmd) para el congreso ICCB-ECCB 2015 por Joona Lehtomaki ([jlehtoma](https://twitter.com/jlehtoma) en Twitter), y por [Emily J. Rollinson](http://rollinsonecology.com) ([ejrollinson](https://twitter.com/ejrollinson) en Twitter), para los congresos de la Ecological Society of America de 2015 (Baltimore, #ESA100), y de 2016 (Fort Lauderdale, Florida, #ESA2016). Tambi?n he incorporado algunos elementos del an?lisis de redes que hizo [Keith H.Turner](http://twitter.com/kay_aych) para el [ISME2016](https://github.com/khturner/HashtagISME16).
-
-Los tweets que incluian el hashtag #AEETMED se recopilaron mediante el paquete [twitteR](https://cran.r-project.org/web/packages/twitteR/index.html) a partir de la API de Twitter. El documento se gener? mediante RMarkdown, y el c?digo fuente y los datos est?n
- [disponibles en mi GitHub](https://github.com/ameztegui/Hashtag_Analysis). El documento, as? como el c?digo asociado, tienen una [licencia CC0](https://creativecommons.org/choose/zero/?lang=es_ES).
 
